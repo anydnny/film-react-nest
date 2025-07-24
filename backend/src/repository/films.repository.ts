@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Film, Schedule, FilmDocument } from 'src/films/schema/films.schema';
+import { Film, Schedule } from 'src/films/schema/films.schema';
 
 @Injectable()
 export class FilmsRepository {
