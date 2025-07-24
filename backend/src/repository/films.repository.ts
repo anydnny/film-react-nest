@@ -7,13 +7,13 @@ import { Film, Schedule, FilmDocument } from 'src/films/schema/films.schema';
 export class FilmsRepository {
   constructor(
     @InjectModel(Film.name)
-    private readonly filmModel: Model<FilmDocument>,
+    private readonly filmModel: Model<Film>,
   ) {}
 
-  async findAllFilms() {
+  async findAllFilms(): Promise<Film[]> {
     return this.filmModel.find({});
   }
-  async findFilmById(id: string) {
-    return this.filmModel.findOne({ id })
+  async findFilmById(id: string): Promise<Film | null> {
+    return this.filmModel.findOne({ id });
   }
 }

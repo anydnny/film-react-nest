@@ -7,8 +7,16 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        includePaths: ['src/scss']
-      }
-    }
+        includePaths: ["src/scss"],
+      },
+    },
   },
-})
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+    },
+  },
+});

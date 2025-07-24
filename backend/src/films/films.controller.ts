@@ -7,19 +7,19 @@ export class FilmsController {
 
   @Get()
   async getAllFilms() {
-    const filmsList = await this.filmService.getAllFilms()
+    const filmsList = await this.filmService.getAllFilms();
     return {
+      total: filmsList.length,
       items: filmsList,
-      total: filmsList.length
-    }
+    };
   }
 
   @Get(':id/schedule')
-  async getFilmById(@Param('id') id:string) {
-    const film = await this.filmService.getFilmById(id)
+  async getFilmById(@Param('id') id: string) {
+    const film = await this.filmService.getFilmById(id);
     return {
+      total: film.schedule.length,
       items: film.schedule,
-      total: film.schedule.length
-    }
+    };
   }
 }
