@@ -16,4 +16,7 @@ export class FilmsRepository {
   async findFilmById(id: string): Promise<Film | null> {
     return this.filmModel.findOne({ id });
   }
+  async updateOrder(filmId: string, schedule: Schedule[]): Promise<void> {
+    await this.filmModel.updateOne({ id: filmId }, { $set: { schedule } });
+  }
 }
