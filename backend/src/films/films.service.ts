@@ -10,8 +10,8 @@ export class FilmsService {
     private filmsRepository: Repository<FilmEntity>,
   ) {}
 
-  async getAllFilms(): Promise<{ total: number; films: FilmEntity[] }> {
-    const [total, films] = await Promise.all([
+  async getAllFilms(): Promise<{ total: number; items: FilmEntity[] }> {
+    const [total, items] = await Promise.all([
       this.filmsRepository.count(),
       this.filmsRepository.find({
         relations: {
@@ -19,12 +19,12 @@ export class FilmsService {
         },
       }),
     ]);
-    return { total, films };
+    return { total, items };
   }
 
   async getFilmById(
     id: string,
-  ): Promise<{ total: number; films: ScheduleEntity[] }> {
+  ): Promise<{ total: number; items: ScheduleEntity[] }> {
     const film = await this.filmsRepository.findOne({
       where: { id },
       relations: {
@@ -36,6 +36,6 @@ export class FilmsService {
       throw new NotFoundException(`Такой фильм не найден`);
     }
 
-    return { total: film.schedule.length, films: film.schedule };
+    return { total: film.schedule.length, items: film.schedule };
   }
 }

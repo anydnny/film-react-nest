@@ -38,7 +38,11 @@ export class OrderService {
         throw new Error(`Место ${sessionPlace} уже занято в сеансе ${session}`);
       }
 
-      searchedSession.taken.push(sessionPlace);
+      if (searchedSession.taken) {
+        searchedSession.taken = `${searchedSession.taken},${sessionPlace}`;
+      } else {
+        searchedSession.taken = sessionPlace;
+      }
 
       await this.filmsRepository.save(searchedFilm);
     }

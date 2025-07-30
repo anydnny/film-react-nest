@@ -18,8 +18,8 @@ export class FilmEntity {
   @IsString()
   director: string;
   @Column()
-  @IsArray()
-  tags: string[];
+  @IsString()
+  tags: string;
   @Column()
   @IsString()
   title: string;
@@ -41,7 +41,7 @@ export class FilmEntity {
   schedule: ScheduleEntity[];
 }
 
-@Entity()
+@Entity('schedules')
 export class ScheduleEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -61,8 +61,8 @@ export class ScheduleEntity {
   @IsNumber()
   price: number;
   @Column()
-  @IsArray()
-  taken: string[];
+  @IsString()
+  taken: string;
   @ManyToOne(() => FilmEntity, (film) => film.schedule)
   film: FilmEntity;
 }
