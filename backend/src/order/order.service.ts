@@ -1,37 +1,55 @@
 import { Injectable } from '@nestjs/common';
 import { OrderDto } from './dto/order.dto';
-import { FilmsRepository } from 'src/repository/films.repository';
+import { FilmEntity } from 'src/films/entities/films.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class OrderService {
-  constructor(private readonly filmsRepository: FilmsRepository) {}
+  constructor(
+    @InjectRepository(FilmEntity)
+    private readonly filmsRepository: Repository<FilmEntity>,
+  ) {}
 
   async create(orderDto: OrderDto) {
-    const order = [];
     for (const ticket of orderDto.tickets) {
-      const film = await this.filmsRepository.findFilmById(ticket.film);
-      if (!film) {
-        throw new Error(`Фильм ${ticket.film} не найден`);
+      const { film, session, row, seat } = ticket;
+
+      const searchedFilm = await this.filmsRepository.findOne({
+        where: { id: ticket.film },
+        relations: { schedule: true },
+      });
+
+      if (!searchedFilm) {
+        throw new Error(`Фильм ${film} не найден`);
       }
-      const session = film.schedule.find((s) => s.id === ticket.session);
-      if (!session) {
-        throw new Error(
-          `Сеанс ${ticket.session} не найден для фильма ${ticket.film}`,
-        );
+
+      const searchedSession = searchedFilm.schedule.find(
+        (s) => s.id === session,
+      );
+
+      if (!searchedSession) {
+        throw new Error(`Сеанс ${session} не найден для фильма ${film}`);
       }
-      const sessionPlace = `${ticket.row}:${ticket.seat}`;
-      if (session.taken.includes(sessionPlace)) {
-        throw new Error(
-          `Место ${sessionPlace} уже занято в сеансе ${ticket.session}`,
-        );
+
+      const sessionPlace = this.createSeatKey(row, seat);
+
+      if (searchedSession.taken.includes(sessionPlace)) {
+        throw new Error(`Место ${sessionPlace} уже занято в сеансе ${session}`);
       }
-      session.taken.push(sessionPlace);
-      await this.filmsRepository.updateOrder(film.id, film.schedule);
-      order.push(ticket);
+
+      searchedSession.taken.push(sessionPlace);
+
+      await this.filmsRepository.save(searchedFilm);
     }
+
     return {
-      total: order.length,
-      items: order,
+      total: orderDto.tickets.length,
+      items: orderDto.tickets,
     };
+  }
+
+  createSeatKey(row: number, seat: number) {
+    return `${row}:${seat}`;
   }
 }

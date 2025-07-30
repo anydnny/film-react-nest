@@ -1,20 +1,41 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { FilmsRepository } from 'src/repository/films.repository';
-import { Film } from './schema/films.schema';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { FilmEntity, ScheduleEntity } from './entities/films.entity';
 
 @Injectable()
 export class FilmsService {
-  constructor(private filmsRepository: FilmsRepository) {}
+  constructor(
+    @InjectRepository(FilmEntity)
+    private filmsRepository: Repository<FilmEntity>,
+  ) {}
 
-  async getAllFilms(): Promise<Film[]> {
-    return this.filmsRepository.findAllFilms();
+  async getAllFilms(): Promise<{ total: number; films: FilmEntity[] }> {
+    const [total, films] = await Promise.all([
+      this.filmsRepository.count(),
+      this.filmsRepository.find({
+        relations: {
+          schedule: true,
+        },
+      }),
+    ]);
+    return { total, films };
   }
 
-  async getFilmById(id: string): Promise<Film> {
-    const film = await this.filmsRepository.findFilmById(id);
+  async getFilmById(
+    id: string,
+  ): Promise<{ total: number; films: ScheduleEntity[] }> {
+    const film = await this.filmsRepository.findOne({
+      where: { id },
+      relations: {
+        schedule: true,
+      },
+    });
+
     if (!film) {
       throw new NotFoundException(`Такой фильм не найден`);
     }
-    return film;
+
+    return { total: film.schedule.length, films: film.schedule };
   }
 }
