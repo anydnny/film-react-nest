@@ -7,7 +7,7 @@ import { configProvider } from 'src/app.config.provider';
   imports: [
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService:ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get<string>('DATABASE_URL'),
         port: configService.get<number>('DATABASE_PORT'),
@@ -16,11 +16,9 @@ import { configProvider } from 'src/app.config.provider';
         password: configService.get<string>('DATABASE_PASSWORD'),
         entities: [__dirname + '/../*/**/*.entity{.ts,.js}'],
         synchronize: false,
-        logging: true,
-        logger: 'advanced-console'
       }),
       inject: [ConfigService],
-    } )
+    }),
   ],
   providers: [configProvider],
 })

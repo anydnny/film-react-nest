@@ -1,4 +1,4 @@
-import { IsArray, IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsString } from 'class-validator';
 import {
   Column,
   PrimaryGeneratedColumn,
