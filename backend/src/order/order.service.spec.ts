@@ -1,5 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrderService } from './order.service';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { FilmEntity } from '../films/entities/films.entity';
 
 describe('OrderService', () => {
   let service: OrderService;
@@ -9,9 +11,7 @@ describe('OrderService', () => {
       providers: [
         OrderService,
         {
-          provide: require('@nestjs/typeorm').getRepositoryToken(
-            require('../films/entities/films.entity').FilmEntity,
-          ),
+          provide: getRepositoryToken(FilmEntity),
           useValue: {}, // Мок-репозиторий
         },
       ],

@@ -1,4 +1,4 @@
-import { TskvLogger } from "./tskvMode.logger";
+import { TskvLogger } from './tskvMode.logger';
 
 describe('TskvLogger', () => {
   let logger: TskvLogger;
@@ -18,7 +18,7 @@ describe('TskvLogger', () => {
     logger.log('Тестовое сообщение', 'Контекст Приложения');
     expect(console.log).toHaveBeenCalledWith(
       expect.stringMatching(
-        /^level=log\ttimestamp=.*\tmessage=Тестовое сообщение\tparam0="Контекст Приложения"$/
+        /^level=log\ttimestamp=.*\tmessage=Тестовое сообщение\tparam0="Контекст Приложения"$/,
       ),
     );
   });

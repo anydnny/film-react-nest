@@ -30,5 +30,4 @@ export class JsonModeLogger implements LoggerService {
   debug(message: any, ...optionalParams: any[]) {
     console.debug(this.formatMessage('debug', message, ...optionalParams));
   }
-
 }

@@ -1,10 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FilmsController } from './films.controller';
 import { FilmsService } from './films.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { FilmEntity } from './entities/films.entity';
 import { Film } from './schema/films.schema';
-import exp from 'constants';
 
 describe('FilmsController', () => {
   let controller: FilmsController;

@@ -1,8 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { FilmEntity } from '../films/entities/films.entity';
 import { OrderDto } from './dto/order.dto';
 
 describe('OrderController', () => {
