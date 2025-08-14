@@ -6,7 +6,15 @@ describe('FilmsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [FilmsService],
+      providers: [
+        FilmsService,
+        {
+          provide: require('@nestjs/typeorm').getRepositoryToken(
+            require('./entities/films.entity').FilmEntity,
+          ),
+          useValue: {}, // Мок-репозиторий
+        },
+      ],
     }).compile();
 
     service = module.get<FilmsService>(FilmsService);

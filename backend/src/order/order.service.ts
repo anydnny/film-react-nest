@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { OrderDto } from './dto/order.dto';
-import { FilmEntity } from 'src/films/entities/films.entity';
+import { FilmEntity } from '../films/entities/films.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
