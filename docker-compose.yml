@@ -23,7 +23,7 @@ services:
       - app-network
 
   backend:
-    image: film-backend:latest
+    image: ghcr.io/anydnny/film-react-nest/backend:latest
     env_file:
       - ./backend/.env
     depends_on:
@@ -34,7 +34,7 @@ services:
       - app-network
 
   frontend:
-    image: film-frontend:latest
+    image: ghcr.io/anydnny/film-react-nest/frontend:latest
     ports:
       - "80:80"
     depends_on:
