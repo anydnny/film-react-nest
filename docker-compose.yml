@@ -9,6 +9,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - app-network
+    restart: unless-stopped
 
   pgadmin:
     image: dpage/pgadmin4
@@ -21,6 +22,7 @@ services:
       - pgadmin_data:/var/lib/pgadmin
     networks:
       - app-network
+    restart: unless-stopped
 
   backend:
     image: ghcr.io/anydnny/film-react-nest/backend:latest
@@ -32,6 +34,7 @@ services:
       - "3000:3000"
     networks:
       - app-network
+    restart: unless-stopped
 
   frontend:
     image: ghcr.io/anydnny/film-react-nest/frontend:latest
@@ -41,6 +44,7 @@ services:
       - backend
     networks:
       - app-network
+    restart: unless-stopped
 
 networks:
   app-network:
